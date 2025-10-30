@@ -2,7 +2,7 @@ from pico2d import load_image, get_time
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT
 
 import game_world
-from ball import Ball
+from ball import Ball, BigBall
 from state_machine import StateMachine
 
 
@@ -116,6 +116,9 @@ class Run:
 
 class Boy:
     def __init__(self):
+
+        self.item = 'Ball'
+
         self.x, self.y = 400, 90
         self.frame = 0
         self.face_dir = 1
@@ -144,7 +147,11 @@ class Boy:
     def draw(self):
         self.state_machine.draw()
 
-
     def fire_ball(self):
-        ball = Ball(self.x, self.y, self.face_dir*10)
+        ball = None
+        if self.item == 'Ball':
+            ball = Ball(self.x, self.y, self.face_dir*10)
+        elif self.item == 'BigBall':
+            ball = BigBall(self.x, self.y, self.face_dir*10)
+        else: return
         game_world.add_object(ball, 1)
